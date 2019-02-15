@@ -2,16 +2,25 @@
 # quiz-orm/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, RadioField, HiddenField, FieldList
-from wtforms import SelectField, FormField, BooleanField
+from wtforms import StringField, HiddenField, BooleanField
+from wtforms import SelectField, FormField, FieldList
 from wtforms.validators import Required
 
 blad1 = 'To pole jest wymagane'
 
+class UczenForm(FlaskForm):
+    id = HiddenField("")
+    imie = StringField("Imie")
+    nazwisko = StringField("Nazwisko")
+
 
 class KlasaForm(FlaskForm):
-    pass
+    id = HiddenField("klasa id")
+    klasa = StringField("Numer klasy:")
+    rok_naboru
 
 
-class UczenForm(FlaskForm):
-    pass
+
+
+
+
