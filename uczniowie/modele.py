@@ -5,31 +5,40 @@
 
 from peewee import *
 
-baza_plik = 'quiz.db'
-baza = SqliteDatabase(baza_plik)  # instancja bazy
+baza_plik = 'uczniowie.db'
+# MODEL
+baza = SqliteDatabase(baza_plik, pragmas={
+  'foreign_keys': 1
+})
 
 
-### MODELE ###
 class BazaModel(Model):
     class Meta:
         database = baza
 
 
 class Klasa(BazaModel):
-    kategoria = CharField(null=False)
+  nazwa = CharField(null=False)
+  rok_naboru = IntegerField(default=0)
+  rok_matury = IntegerField(default=0)
 
 
 class Uczen(BazaModel):
-    pytanie = CharField(null=False)
-    kategoria = ForeignKeyField(Kategoria, related_name='pytania')
+  imie = CharField(null=False)
+  nazwisko = CharField(null=False)
+  plec = IntegerField()
+  klasa = ForeignKeyField(Klasa, related_name='uczniowie', on_delete='CASCADE')
 
 
-class Odpowiedz(BazaModel):
-    odpowiedz = CharField(null=False)
-    pytanie = ForeignKeyField(Pytanie, related_name='odpowiedzi')
-    odpok = IntegerField(default=0)
+def main(args):
+  # Uwaga: po utworzeniu modeli uruchom plik modele.py
+  # jeden raz w środowisku z zainstalowaną biblioteką peewee:
+  # python modele.py
+  baza.connect()
+  baza.create_tables([Klasa, Uczen])
 
 
 if __name__ == '__main__':
-    import sys
-    sys.exit(main(sys.argv))
+  import sys
+
+  sys.exit(main(sys.argv))
